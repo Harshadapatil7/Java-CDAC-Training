@@ -1,6 +1,9 @@
 package com.app.entities;
 
-import java.util.Scanner;
+import com.app.exceptions.EmptyFieldException;
+import com.app.exceptions.InvalidJoiningDateException;
+import com.app.exceptions.NegativeEmpIdException;
+import com.app.exceptions.NegativeSalaryException;
 
 public class Employee extends Person {
 	int empId;
@@ -16,9 +19,21 @@ public class Employee extends Person {
 	public Employee(String name, int dayOfBirth, int monthOfBirth, int yearOfBirth, int empId, String department,
 			double salary, int dayOfJoining, int monthOfJoining, int yearOfJoining) {
 		super(name, dayOfBirth, monthOfBirth, yearOfBirth);
+
+		if (empId <= 0)
+			throw new NegativeEmpIdException("Employee id must be positive");
 		this.empId = empId;
+
+		if (department == null)
+			throw new EmptyFieldException();
 		this.department = department;
+
+		if (salary < 0)
+			throw new NegativeSalaryException("Salary is never negative");
 		this.salary = salary;
+
+		if (getAgeAtJoining(yearOfBirth, yearOfJoining) < 20)
+			throw new InvalidJoiningDateException("Employee's age must be greater then 20 before joining");
 		this.dateOfJoining = new MyDate(dayOfJoining, monthOfJoining, yearOfJoining);
 	}
 
@@ -31,6 +46,7 @@ public class Employee extends Person {
 	}
 
 	public MyDate getDateOfJoining() {
+
 		return dateOfJoining;
 	}
 
@@ -39,14 +55,20 @@ public class Employee extends Person {
 	}
 
 	public void setSalary(double salary) {
+		if (salary < 0)
+			throw new NegativeSalaryException("Salary is never negative");
 		this.salary = salary;
 	}
 
 	public void setEmpId(int empId) {
+		if (empId <= 0)
+			throw new NegativeEmpIdException("Employee id must be positive");
 		this.empId = empId;
 	}
 
 	public void setDepartment(String department) {
+		if (department == null)
+			throw new EmptyFieldException();
 		this.department = department;
 	}
 
@@ -54,18 +76,8 @@ public class Employee extends Person {
 		this.dateOfJoining = dateOfJoining;
 	}
 
-	@Override
-	public void accept(Scanner sc) {
-		System.out.print("Enter Employee ID: ");
-		empId = sc.nextInt();
-		sc.nextLine();
-		super.accept(sc);
-		System.out.print("Enter Department: ");
-		department = sc.nextLine();
-		System.out.print("Enter salary: ");
-		salary = sc.nextDouble();
-		System.out.println("Enter date of joining: ");
-		dateOfJoining.acceptDate(sc);
+	public int getAgeAtJoining(int yearOfBirth, int yearOfJoining) {
+		return yearOfJoining - yearOfBirth;
 	}
 
 	@Override

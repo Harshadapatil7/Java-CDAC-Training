@@ -1,6 +1,6 @@
 package com.app.entities;
 
-import java.util.Scanner;
+import com.app.exceptions.InvalidDateException;
 
 public class MyDate {
 	int day;
@@ -12,8 +12,16 @@ public class MyDate {
 	}
 
 	public MyDate(int day, int month, int year) {
+		if (day <= 0 || day > 31)
+			throw new InvalidDateException("Day must be between 1 to 31");
 		this.day = day;
+
+		if (month <= 0 || month > 12)
+			throw new InvalidDateException("Day must be between 1 to 12");
 		this.month = month;
+
+		if (year <= 0 || year > 2025)
+			throw new InvalidDateException();
 		this.year = year;
 	}
 
@@ -30,25 +38,21 @@ public class MyDate {
 	}
 
 	public void setDay(int day) {
+		if (day <= 0 || day > 31)
+			throw new InvalidDateException("Day must be between 1 to 31");
 		this.day = day;
 	}
 
 	public void setMonth(int month) {
+		if (day <= 0 || day > 31)
+			throw new InvalidDateException("Day must be between 1 to 31");
 		this.month = month;
 	}
 
 	public void setYear(int year) {
+		if (year <= 0 || year > 2025)
+			throw new InvalidDateException();
 		this.year = year;
-	}
-
-	public void acceptDate(Scanner sc) {
-		System.out.print("Enter day - ");
-		day = sc.nextInt();
-		System.out.print("Enter month - ");
-		month = sc.nextInt();
-		System.out.print("Enter year - ");
-		year = sc.nextInt();
-		sc.nextLine();
 	}
 
 	@Override

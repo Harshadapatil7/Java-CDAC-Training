@@ -1,8 +1,8 @@
 package com.app.entities;
 
-import java.util.Scanner;
+import com.app.exceptions.EmptyFieldException;
 
-public class Person {
+public abstract class Person {
 	String name;
 	MyDate dateOfBirth;
 
@@ -11,6 +11,8 @@ public class Person {
 	}
 
 	public Person(String name, int day, int month, int year) {
+		if (name == null)
+			throw new EmptyFieldException();
 		this.name = name;
 		this.dateOfBirth = new MyDate(day, month, year);
 	}
@@ -29,13 +31,6 @@ public class Person {
 
 	public void setDateOfBirth(MyDate dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
-	}
-
-	public void accept(Scanner sc) {
-		System.out.print("Enter name: ");
-		name = sc.nextLine();
-		System.out.println("Enter date of birth:");
-		dateOfBirth.acceptDate(sc);
 	}
 
 	@Override
